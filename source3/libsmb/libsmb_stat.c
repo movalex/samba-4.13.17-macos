@@ -102,6 +102,11 @@ void setup_stat(struct stat *st,
 	}
 
 	st->st_dev = dev;
+    #if defined(__APPLE__) || defined(__NetBSD__)
+        #define st_atim st_atimespec
+        #define st_ctim st_ctimespec
+        #define st_mtim st_mtimespec
+    #endif
 	st->st_atim = access_time_ts;
 	st->st_ctim = change_time_ts;
 	st->st_mtim = write_time_ts;

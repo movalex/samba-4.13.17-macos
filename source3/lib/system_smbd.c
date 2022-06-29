@@ -205,7 +205,11 @@ bool getgroups_unix_user(TALLOC_CTX *mem_ctx, const char *user,
 			 gid_t primary_gid,
 			 gid_t **ret_groups, uint32_t *p_ngroups)
 {
+#if defined(DARWINOS)
+    int max_grp = 128;
+#else
 	int max_grp = MIN(128, groups_max());
+#endif
 	gid_t stack_groups[max_grp];
 	uint32_t ngrp;
 	gid_t *temp_groups = stack_groups;

@@ -1231,6 +1231,11 @@ static bool torture_libsmbclient_utimes(struct torture_context *tctx)
 	ret = smbc_fstat(fhandle, &st);
 	torture_assert_int_not_equal(tctx, ret, -1, "smbc_fstat failed");
 
+    #if defined(__APPLE__) || defined(__NetBSD__)
+        #define st_atim st_atimespec
+        #define st_mtim st_mtimespec
+    #endif
+
 	tbuf[0] = convert_timespec_to_timeval(st.st_atim);
 	tbuf[1] = convert_timespec_to_timeval(st.st_mtim);
 
